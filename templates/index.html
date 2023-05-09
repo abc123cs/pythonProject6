@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>学生管理系统</title>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+<div>
+    <h1>学生管理系统</h1>
+    <hr>
+    <h2>登录</h2>
+    <form>
+        <label>用户名：</label><input type="text" name="users" id="users">
+        <br><br>
+        <label>密&nbsp;&nbsp;&nbsp;码&nbsp;：</label><input type="password" name="pwds" id="pwds">
+        <br><br>
+        <input type="button" value="提交" onclick="login()">
+    </form>
+</div>
+<script>
+    function login() {
+        var users = $('#users').val();
+        var pwds = $('#pwds').val();
+        $.ajax({
+            type: "POST",
+            url: "/login",
+            data: {"users": users, "pwds": pwds},
+            success: function(data){
+                if (data === 'success') {
+                    window.location.href = "/student";
+                } else {
+                    alert("账号或密码错误，请重新输入！")
+                }
+            },
+            error: function(){
+                alert("请求失败，请稍候重试！")
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>学生管理系统</title>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+<div>
+    <h1>学生管理系统</h1>
+    <hr>
+    <h2>学生列表</h2>
+    <table border="1">
+        <tr>
+            <td>姓名</td>
+            <td>学号</td>
+            <td>年龄</td>
+        </tr>
+        {% for stu in student_list %}
+        <tr>
+            <td>{{stu['name']}}</td>
+            <td>{{stu['id']}}</td>
+            <td>{{stu['age']}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <hr>
+    <h2>操作</h2>
+    <form>
+        <label>姓名：</label><input type="text" name="name" id="name">
+        <br><br>
+        <label>学号：</label><input type="text" name="id" id="id">
+        <br><br>
+        <label>年龄：</label><input type="text" name="age" id="age">
+        <br><br>
+        <input type="button" value="添加" onclick="addStudent()">
+        <input type="text" name="del_name" id="del_name">
+        <input type="button" value="删除" onclick="delStudent()">
+        <br><br>
+        <input type="text" name="modify_name" id="modify_name">
+        <input type="text" name="new_id" id="new_id">
+        <input type="text" name="new_age" id="new_age">
+        <input type="button" value="修改" onclick="modifyStudent()">
+        <br><br>
+        <input type="text" name="search_name" id="search_name">
+        <input type="button" value="查询" onclick="searchStudent()">
+    </form>
+</div>
+<script>
+    function addStudent() {
+        var name = $('#name').val();
+        var id = $('#id').val();
+        var age = $('#age').val();
+        $.ajax({
+            type: "POST",
+            url: "/addStudent",
+            data: {"name": name, "id": id, "age": age},
+            success: function(data){
+                if (data === 'success') {
+                    alert("添加成功！");
+                    window.location.reload();
+                } else {
+                    alert("添加失败，请稍候重试！");
+                }
+            },
+            error: function(){
+                alert("请求失败，请稍候重试！")
+            }
+        });
+    }
+    function delStudent() {
+        var del_name = $('#del_name').val();
+        $.ajax({
+            type: "POST",
+            url: "/deleteStudent",
+            data: {"del_name": del_name},
+            success: function(data){
+                if (data === 'success') {
+                    alert("删除成功！");
+                    window.location.reload();
+                } else {
+                    alert("删除失败，请稍候重试！");
+                }
+            },
+            error: function(){
+                alert("请求失败，请稍候重试！")
+            }
+        });
+    }
+    function modifyStudent() {
+        var modify_name = $('#modify_name').val();
+        var new_id = $('#new_id').val();
+        var new_age = $('#new_age').val();
+        $.ajax({
+            type: "POST",
+            url: "/modifyStudent",
+            data: {"modify_name": modify_name, "new_id": new_id, "new_age": new_age},
+            success: function(data){
+                if (data === 'success') {
+                    alert("修改成功！");
+                    window.location.reload();
+                } else {
+                    alert("修改失败，请稍候重试！");
+                }
+            },
+            error: function(){
+                alert("请求失败，请稍候重试！");
+            }
+        });
+    }
+    function searchStudent() {
+        var search_name = $('#search_name').val();
+        $.ajax({
+            type: "POST",
+            url: "/searchStudent",
+            data: {"search_name": search_name},
+            success: function(data){
+                if (data === 'fail') {
+                    alert("查询失败，请稍候重试！");
+                } else {
+                    alert(data);
+                }
+            },
+            error: function(){
+                alert("请求失败，请稍候重试！");
+            }
+        });
+    }
+</script>
+</body>
+</html>
