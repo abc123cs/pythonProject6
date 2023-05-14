@@ -94,21 +94,23 @@ student_manager = StudentManager()
 def index():
     return render_template('index.html')
 
+
 @app.route('/login', methods=['POST'])
 def login():
-    users = request.form['users']
-    pwds = request.form['pwds']
-    if denglu(users, pwds):
-        return 'success'
+    users = request.form['username']
+    pwds = request.form['password']
+    if users in user and pwds in pwd:
+        return render_template('student.html')
     else:
-        return 'fail'
+        return render_template('index.html', error='Invalid credentials')
 
 @app.route('/register', methods=['POST'])
 def register():
-    users = request.form['users']
-    pwds = request.form['pwds']
-    zhuce(users, pwds)
-    return 'success'
+    users=request.form['username']
+    pwds=request.form['password']
+    user.append(users)
+    pwd.append(pwds)
+    return render_template('index.html', message='Registration successful')
 
 @app.route('/student', methods=['GET'])
 def show_student():
